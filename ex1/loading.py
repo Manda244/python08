@@ -1,7 +1,11 @@
-import sys
 import importlib.util
 from importlib.metadata import version, PackageNotFoundError
 from typing import Optional
+try:
+    import numpy as np
+    import pandas as pd
+except ImportError:
+    pass
 
 
 def check_dependencies(package_name: str) -> Optional[str]:
@@ -40,26 +44,25 @@ def print_installation_instruction(missing: list[str]) -> None:
 
 
 def simulate_matrix_data(n_points: int = 1000) -> "np.ndarray":
-    try:
-        import numpy as np
-        data = np.random.randn(n_points)
-        return data
-    except ImportError:
-        pass
+    if "np" not in globals():
+        return None
+    data = np.random.randn(n_points)
+    return data
 
 
-def analyze_data(data) -> "pd.DataFrame":
-    try:
-        import pandas as pd
-        print(f"Processing {len(data)} data points...")
-        df = pd.DataFrame({"value": data})
-        df.describe()
-        return df
-    except ImportError:
-        pass
+def analyze_data(data: "np.ndarray") -> "pd.DataFrame":
+    if "pd" not in globals():
+        return None
+    print(f"Processing {len(data)} data points...")
+    df = pd.DataFrame({"value": data})
+    df.describe()
+    return df
 
 
-def visualize_data(df, output_path: str = "matrix_analysis.png") -> None:
+def visualize_data(
+    df: "pd.DataFrame",
+    output_path: str = "matrix_analysis.png"
+) -> None:
     try:
         import matplotlib
         matplotlib.use("Agg")
@@ -67,7 +70,7 @@ def visualize_data(df, output_path: str = "matrix_analysis.png") -> None:
 
         plt.figure()
         plt.hist(df["value"], bins=30)
-        plt.title("environement")
+        plt.title("matrix_analysis")
         plt.xlabel("___")
         plt.ylabel("___")
         plt.savefig(output_path)
@@ -76,15 +79,15 @@ def visualize_data(df, output_path: str = "matrix_analysis.png") -> None:
         pass
 
 
-def main()-> None:
+def main() -> None:
     print()
     print("LOADING STATUS: Loading programs...")
     print()
     deps = {
-        "pandas":"Data manipulation ready",
-        "numpy":"Numerical computation ready",
-        "requests":"Network access ready",
-        "matplotlib":"Visualization ready",
+        "pandas": "Data manipulation ready",
+        "numpy": "Numerical computation ready",
+        "requests": "Network access ready",
+        "matplotlib": "Visualization ready",
     }
     status = print_dependency_status(deps)
     missing = [name for name, ok in status.items() if not ok]
@@ -99,7 +102,10 @@ def main()-> None:
     print("Generating visualization...")
     print()
     print("Analysis complete!")
-    print("Results saved to: matrix_analysis.png")
+    if missing:
+        print("Results not saved to: matrix_analysis.png")
+    else:
+        print("Results saved to: matrix_analysis.png")
 
 
 if __name__ == "__main__":

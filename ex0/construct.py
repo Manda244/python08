@@ -2,13 +2,14 @@ import sys
 import os
 import site
 
+
 def main() -> None:
     if sys.prefix == sys.base_prefix:
         print()
         print("MATRIX STATUS: You're still plugged in")
         print()
         print(f"Current Python: {sys.executable}")
-        print(f"Virtual Environment: None detected")
+        print("Virtual Environment: None detected")
         print()
         print("WARNING: You're in the global environment!")
         print("The machines can see everything you install.")
@@ -16,7 +17,7 @@ def main() -> None:
         print("To enter the construct, run:")
         print("python -m venv matrix_env")
         print("source matrix_env/bin/activate # On Unix")
-        print("matrix_env\Scripts\activate # On Windows")
+        print(r"matrix_env\Scripts\activate # On Windows")
         print()
         print("Then run this program again.")
     else:
