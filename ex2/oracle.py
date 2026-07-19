@@ -1,12 +1,13 @@
 import os
-try:
-    from dotenv import load_dotenv
-except ImportError:
-    pass
 
 
 def loading_configuration() -> dict[str, str]:
-    load_dotenv()
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        pass
+
     config: dict[str, str] = {
         "MATRIX_MODE": os.environ.get("MATRIX_MODE", "development"),
         "DATABASE_URL": os.environ.get("DATABASE_URL", "Not configured"),

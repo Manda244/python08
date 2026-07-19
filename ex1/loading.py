@@ -106,6 +106,18 @@ def main() -> None:
         print("Results not saved to: matrix_analysis.png")
     else:
         print("Results saved to: matrix_analysis.png")
+        print()
+        print("Package managers comparison:")
+        print("- pip:")
+        print("  * installs packages directly")
+        print("  * uses requirements.txt")
+        print("  * no dependency locking by default")
+
+        print("- Poetry:")
+        print("  * manages dependencies and virtual environments")
+        print("  * uses pyproject.toml")
+        print("  * creates poetry.lock for reproducible installs")
+        
 
 
 if __name__ == "__main__":
